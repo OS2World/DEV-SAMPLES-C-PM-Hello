@@ -1,39 +1,64 @@
 #===================================================================
 #
-#   Hello Make file
-#   Copyright 1991 IBM Corporation
+#   HELLO.MAK - Standard Window Application Make file
+#   Copyright   IBM Corporation 1996
 #
 #===================================================================
+#===================================================================
+# Include the file ibmsamp.inc which defines the various macros
+# depending on the target specified.
+#
+# The following macros are defined in ibmsamp.inc:
+#
+#       OBJDIR   - Directory where object files are created
+#       EXEDIR   - Directory where executable files are created
+#       RC       - Resource compiler
+#       RCFLAGS  - Resource compiler flags
+#       LINK     - Linker
+#       LFLAGS   - Linker flags
+#       MTLIBS   - Multithreaded versions of the runtime libraries
+#===================================================================
 
-include ..\ibmsamp.inc
-
-CC         = icc /c /Ge /Gd- /Se /Re /ss /Gm+
+!include ..\..\ibmsamp.inc
 
 HEADERS = hello.h
-
 #-------------------------------------------------------------------
+#
 #   A list of all of the object files
+#
 #-------------------------------------------------------------------
-ALL_OBJ1 = hello.obj
 
+OBJS = $(OBJDIR)\hello.obj
 
-all: hello.exe
+#-------------------------------------------------------------------
+#   This section lists all files to be built by  make.  The
+#   makefile builds the executable as well as its associated help
+#   file.
+#-------------------------------------------------------------------
+all: $(EXEDIR)\hello.exe
 
+#-------------------------------------------------------------------
+#   Dependencies
+#     This section lists all object files needed to be built for the
+#     application, along with the files it is dependent upon (e.g.
+#     its source and any header files).
+#-------------------------------------------------------------------
 
-hello.l: hello.mak
-    echo $(ALL_OBJ1)            > hello.l
-    echo hello.exe           >> hello.l
-    echo hello.map           >> hello.l
-    echo $(LIBS)                >> hello.l
-    echo hello.def           >> hello.l
+$(OBJDIR)\hello.res: $(HEADERS) hello.rc hello.ico prodinfo.bmp
+                $(RC) $(RCFLAGS) $(@B).rc $@
+                @del prodinfo.bmp
 
+prodinfo.bmp :
+           copy ..\..\prodinfo.bmp $@
 
+$(OBJDIR)\hello.obj: hello.c $(HEADERS)
 
+$(EXEDIR)\hello.exe: $(OBJS) $(@B).def $(OBJDIR)\$(@B).res
+   -$(CREATE_PATH)
+   $(LINK) $@ $(@B).def $(MTLIBS) $(OBJS)
+   $(RC) -p -x $(OBJDIR)\$(@B).res $@
 
-hello.res: hello.rc hello.ico hello.h
-
-hello.obj: hello.c $(HEADERS)
-
-hello.exe: $(ALL_OBJ1)  hello.def hello.l hello.res
-    $(LINK) @hello.l
-    rc -p -x hello.res hello.exe
+clean :
+        @if exist *.obj del *.obj
+        @if exist *.dll del *.dll
+        @if exist *.exe del *.exe

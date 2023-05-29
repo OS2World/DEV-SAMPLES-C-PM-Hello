@@ -63,6 +63,7 @@
 #define INCL_GPI
 
 #include <os2.h>                        /* PM header file               */
+#include <string.h>
 #include "hello.h"                      /* Resource symbolic identifiers*/
 
 #define STRINGLENGTH 20                 /* Length of string             */
@@ -153,7 +154,7 @@ INT main (VOID)
                ID_WINDOW,               /* Frame window identifier      */
                &hwndClient              /* Client window handle         */
                )) == 0L)
-     AbortHello(hwndFrame, hwndClient); /* Terminate the application    */
+     AbortHello(HWND_DESKTOP, HWND_DESKTOP); /* Terminate the application    */
 
     WinSetWindowText(hwndFrame, "HELLO SAMPLE");
 
@@ -174,6 +175,8 @@ INT main (VOID)
   WinDestroyWindow(hwndFrame);           /* Tidy up...                   */
   WinDestroyMsgQueue( hmq );             /* Tidy up...                   */
   WinTerminate( hab );                   /* Terminate the application    */
+
+  return(0);
 } /* End of main */
 
 /**************************************************************************
@@ -272,6 +275,7 @@ MRESULT EXPENTRY MyWindowProc( HWND hwnd, ULONG msg, MPARAM mp1, MPARAM mp2 )
       POINTL pt;                        /* String screen coordinates    */
                                         /* Create a presentation space  */
       hps = WinBeginPaint( hwnd, 0L, &rc );
+      WinFillRect( hps, &rc, SYSCLR_WINDOW);
       pt.x = 50; pt.y = 50;             /* Set the text coordinates,    */
       GpiSetColor( hps, CLR_NEUTRAL );         /* colour of the text,   */
       GpiSetBackColor( hps, CLR_BACKGROUND );  /* its background and    */
