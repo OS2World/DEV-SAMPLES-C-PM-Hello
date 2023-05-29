@@ -17,7 +17,7 @@
  *      advised of the possibility of such damages.                                                    *
  ******************************************************************************/
 
-#pragma linkage (main,optlink)
+// #pragma linkage (main,optlink)
 INT main(VOID);
 
 extern VOID AbortHello(HWND hwndFrame,HWND hwndClient);

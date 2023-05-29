@@ -7,14 +7,11 @@
 ;  Different HEAPSIZE used. ( 1024 bytes )
 
 
-NAME    hello WINDOWAPI
+NAME    HELLO WINDOWAPI
 
-DESCRIPTION 'OS/2 Presentation Manager Sample'
+DESCRIPTION     '@#OS2World:5.00#@##1## 29 May 2023 20:00:00     ARCAOS-507::::::v5.00@@OS/2 Presentation Manager Sample'
 
 DATA    MULTIPLE
 
 STACKSIZE   8192
-HEAPSIZE    1024
-
-PROTMODE
 

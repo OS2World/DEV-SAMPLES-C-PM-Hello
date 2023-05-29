@@ -147,8 +147,8 @@ INT main (VOID)
                HWND_DESKTOP,            /* Desktop window is parent     */
                0,                       /* STD. window styles           */
                &flCreate,               /* Frame control flag           */
-               "MyWindow",              /* Client window class name     */
-               "",                      /* No window text               */
+               (PCSZ) "MyWindow",              /* Client window class name     */
+               (PCSZ) "",                      /* No window text               */
                0,                       /* No special class style       */
                (HMODULE)0L,           /* Resource is in .EXE file     */
                ID_WINDOW,               /* Frame window identifier      */
@@ -156,7 +156,7 @@ INT main (VOID)
                )) == 0L)
      AbortHello(HWND_DESKTOP, HWND_DESKTOP); /* Terminate the application    */
 
-    WinSetWindowText(hwndFrame, "HELLO SAMPLE");
+    WinSetWindowText(hwndFrame, (PCSZ) "HELLO SAMPLE");
 
   if (!WinSetWindowPos( hwndFrame,      /* Shows and activates frame    */
                    HWND_TOP,            /* window at position 100, 100, */
@@ -218,10 +218,10 @@ MRESULT EXPENTRY MyWindowProc( HWND hwnd, ULONG msg, MPARAM mp1, MPARAM mp2 )
        * Window initialization is performed here in WM_CREATE processing
        * WinLoadString loads strings from the resource file.
        */
-      WinLoadString( hab, (HMODULE)0L, IDS_HELLO, STRINGLENGTH, szHello );
-      WinLoadString( hab, (HMODULE)0L, IDS_1,     STRINGLENGTH, sz1     );
-      WinLoadString( hab, (HMODULE)0L, IDS_2,     STRINGLENGTH, sz2     );
-      WinLoadString( hab, (HMODULE)0L, IDS_3,     STRINGLENGTH, sz3     );
+      WinLoadString( hab, (HMODULE)0L, IDS_HELLO, STRINGLENGTH, (PSZ) szHello );
+      WinLoadString( hab, (HMODULE)0L, IDS_1,     STRINGLENGTH, (PSZ) sz1     );
+      WinLoadString( hab, (HMODULE)0L, IDS_2,     STRINGLENGTH, (PSZ) sz2     );
+      WinLoadString( hab, (HMODULE)0L, IDS_3,     STRINGLENGTH, (PSZ) sz3     );
       strcpy( szString, szHello );      /* Copy text Hello into szString*/
       break;
 
@@ -281,7 +281,7 @@ MRESULT EXPENTRY MyWindowProc( HWND hwnd, ULONG msg, MPARAM mp1, MPARAM mp2 )
       GpiSetBackColor( hps, CLR_BACKGROUND );  /* its background and    */
       GpiSetBackMix( hps, BM_OVERPAINT );      /* how it mixes,         */
                                                /* and draw the string...*/
-      GpiCharStringAt( hps, &pt, (LONG)strlen( szString ), szString );
+      GpiCharStringAt( hps, &pt, (LONG)strlen( szString ), (PCCH) szString );
       WinEndPaint( hps );                      /* Drawing is complete   */
       break;
       }
@@ -337,7 +337,7 @@ VOID AbortHello(HWND hwndFrame, HWND hwndClient)
          WinMessageBox(HWND_DESKTOP,         /* Parent window is desk top */
                        hwndFrame,            /* Owner window is our frame */
                        (PSZ)pszErrMsg,       /* PMWIN Error message       */
-                       "Error Msg",          /* Title bar message         */
+                       (PCSZ) "Error Msg",   /* Title bar message         */
                        MSGBOXID,             /* Message identifier        */
                        MB_MOVEABLE | MB_CUACRITICAL | MB_CANCEL ); /* Flags */
       WinFreeErrorInfo(pErrInfoBlk);
